@@ -7,6 +7,8 @@ const { userRouter } = require("./src/routes/user");
 const adminRouter = require("./src/routes/admin");
 const app = express();
 
+app.use(express.json());
+
 //Routing in express, the Express Router -- the ugly way of doing it
 // createUserRoutes(app);
 // createCourseRoute(app);
