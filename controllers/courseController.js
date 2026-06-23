@@ -1,4 +1,5 @@
 const { CourseModel } = require("../models/Course");
+const { purchaseModel } = require("../models/Purchase");
 const { courseSchema, udpateCoursechema } = require("../validators/courseValidation")
 
 const createCourse = async (req, res)=>{
@@ -128,8 +129,14 @@ const getCourseById = async (req, res)=>{
                 message:"Course not found"
             })
         };
+        const purhcase = await purchaseModel.findOne({
+            userId: req.userId,
+            courseId
+        })
+        const isPurchased = !!purhcase
         return res.status(200).json({
-            course
+            course,
+            isPurchased
         })
     } catch (error) {
         console.log(error);
