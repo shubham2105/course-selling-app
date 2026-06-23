@@ -4,6 +4,7 @@ const { UserModel } = require("../models/User");
 const { userSchema } = require("../validators/userValidation");
 const { CourseModel } = require("../models/Course");
 const { purchaseModel } = require("../models/Purchase");
+const User = require("../routes/User");
 
 const signupUser =  async (req, res) =>{
     try {
@@ -79,6 +80,24 @@ const loginUser = async (req, res)=>{
     })
   }
 }
+const getProfile = async (req, res) =>{
+    try {
+        const user = await UserModel.findById(req.userId)
+            .select("-password -__v")
+        if(!user){
+            return res.status(404).json({
+                message: "User not found",
+            })
+        }
+        res.status(200).json({
+            user
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message:"Internal Server Error"
+        })
+    }
+}
 // const purchaseCourse = async (req, res)=>{
 //     try {
 //         const{courseId} = req.params;
@@ -114,5 +133,6 @@ const loginUser = async (req, res)=>{
 // }
 module.exports = {
     signupUser,
-    loginUser
+    loginUser,
+    getProfile
 }
